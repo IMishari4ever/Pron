@@ -5,7 +5,7 @@ import errorHandler from './middleware/errorHandler.js'
 import globalMiddlewares from './middleware/globalMiddlewares.js'
 import routes from './routes/index.js'
 import databaseConnection from './config/db.js'
-
+import pinJob from './controllers/pinned.time.js'
 const app = express()
 dotenv.config();
 
@@ -25,3 +25,4 @@ app.listen(8800, () => {
   console.log(`SERVER IS RUNNING ON 8800`.rainbow.bold)
 })
 
+pinJob.start();

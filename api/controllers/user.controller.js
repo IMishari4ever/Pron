@@ -26,3 +26,18 @@ export const allUser = async (req, res, next) => {
   )
   res.status(200).json(user)
 }
+
+export const balance = async (req,res,next) => {
+  try{
+    const user = await User.findById(req.params.userId)
+    const amount = req.body.amount;
+    user.balance += amount;
+    await user.save();
+    res.status(200).json(user);
+  }  catch(error){
+      console.error(error);
+      res.status(500).json({
+        message: "Something went wrong"
+      })
+    }
+}

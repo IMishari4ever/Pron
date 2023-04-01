@@ -1,20 +1,24 @@
 import createError from "../utils/createError.js";
 import Order from "../models/order.model.js";
 import Gig from "../models/gig.model.js";
-import Stripe from "stripe";
-export const intent = async (req, res, next) => {
-  const stripe = new Stripe(process.env.STRIPE);
+import User from '../models/user.model.js'
 
+export const purchaseGig = async (req, res, next) => {
   const gig = await Gig.findById(req.params.id);
+  
+  const buyer = await User.findById(req.userId);
+  const seller = await User.findById(gig.userId);
 
-  const paymentIntent = await stripe.paymentIntents.create({
-    amount: gig.price * 100,
-    currency: "usd",
-    automatic_payment_methods: {
-      enabled: true,
-    },
-  });
+  if (buyer.balance < gig.price) {
+    return res.status(400).send({ message: 'balance not enough' });
+  }
 
+  buyer.balance -= gig.price;
+  seller.balance += gig.price;
+  await buyer.save();
+  await seller.save();
+
+  // Create new Order
   const newOrder = new Order({
     gigId: gig._id,
     img: gig.cover,
@@ -22,14 +26,12 @@ export const intent = async (req, res, next) => {
     buyerId: req.userId,
     sellerId: gig.userId,
     price: gig.price,
-    payment_intent: paymentIntent.id,
+    isCompleted: true,
   });
 
   await newOrder.save();
 
-  res.status(200).send({
-    clientSecret: paymentIntent.client_secret,
-  });
+  res.status(200).send({ message: 'Gig purchased successfully' });
 };
 
 export const getOrders = async (req, res, next) => {
@@ -40,24 +42,6 @@ export const getOrders = async (req, res, next) => {
     });
 
     res.status(200).send(orders);
-  } catch (err) {
-    next(err);
-  }
-};
-export const confirm = async (req, res, next) => {
-  try {
-    const orders = await Order.findOneAndUpdate(
-      {
-        payment_intent: req.body.payment_intent,
-      },
-      {
-        $set: {
-          isCompleted: true,
-        },
-      }
-    );
-
-    res.status(200).send("Order has been confirmed.");
   } catch (err) {
     next(err);
   }

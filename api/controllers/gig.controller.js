@@ -58,3 +58,29 @@ export const getGigs = async (req, res, next) => {
     next(err);
   }
 };
+
+export const pinGig = async (req, res, next) => {
+  try {
+    const gig = await Gig.findById(id);
+    if (!gig) {
+      return res.status(404).json({ msg: "Gig not found" });
+    }
+    gig.pinned = true;
+    await gig.save();
+    res.json(gig);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Something went wrong");
+  }
+};
+
+export const pinned = async (req, res, next) => {
+   try {
+    const pinned = await Gig.find({ pinned: true })
+
+    res.json(pinned);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+};
