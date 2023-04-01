@@ -3,7 +3,9 @@ import {
   createGig,
   deleteGig,
   getGig,
-  getGigs
+  getGigs,
+  pinGig,
+  pinned,
 } from "../controllers/gig.controller.js";
 import { verifyToken } from "../middleware/jwt.js";
 
@@ -13,5 +15,6 @@ router.post("/", verifyToken, createGig);
 router.delete("/:id", verifyToken, deleteGig);
 router.get("/single/:id", getGig);
 router.get("/", getGigs);
-
+router.put("/:id/pin", pinGig)
+router.get("/pinned", pinned)
 export default router;
