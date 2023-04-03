@@ -7,7 +7,7 @@ import routes from './routes/index.js'
 import databaseConnection from './config/db.js'
 import pinJob from './controllers/pinned.time.js'
 const app = express()
-dotenv.config();
+dotenv.config()
 
 // DataBase Connection
 databaseConnection()
@@ -25,4 +25,4 @@ app.listen(8800, () => {
   console.log(`SERVER IS RUNNING ON 8800`.rainbow.bold)
 })
 
-pinJob.start();
+pinJob.start()
