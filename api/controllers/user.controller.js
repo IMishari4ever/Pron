@@ -116,6 +116,7 @@ export const followersList = async (req, res, next) => {
 }
 
 //---------------------USER FUNCTIONALITIES--------------------
+
 export const deleteUser = async (req, res, next) => {
   const user = await User.findById(req.params.id)
 

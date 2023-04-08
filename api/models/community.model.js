@@ -1,31 +1,31 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose'
 
 const communityTicket = new mongoose.Schema({
   title: {
     type: String,
-    required: true
+    required: true,
   },
   description: {
     type: String,
-    required: true
+    required: true,
   },
   createdBy: {
-      type: String,
-      required: true,
+    type: String,
+    required: true,
   },
   category: {
-   type: String,
-   required: true,
+    type: String,
+    required: true,
   },
   createdOn: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
   status: {
     type: String,
     enum: ['open', 'closed'],
-    default: 'open'
-  }
-});
+    default: 'open',
+  },
+})
 
-export default mongoose.model("Community", communityTicket);
+export default mongoose.model('Community', communityTicket)
