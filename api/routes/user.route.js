@@ -21,8 +21,6 @@ router.get('/:id/followings', verifyToken, followingList)
 
 // User CRUD Functionalities
 router.delete('/:id', verifyToken, deleteUser)
-// router.get('/', verifyToken, authorize(['admin']), allUser)
-
 router.get('/', verifyToken, allUser)
 router.get('/:id', getUser)
 

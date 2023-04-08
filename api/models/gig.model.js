@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-const { Schema } = mongoose;
+import mongoose from 'mongoose'
+const { Schema } = mongoose
 
 const GigSchema = new Schema(
   {
@@ -68,17 +68,17 @@ const GigSchema = new Schema(
       default: 0,
     },
     pinned: {
-    type: Boolean,
-    default: false,
-  },
+      type: Boolean,
+      default: false,
+    },
     pinnedAt: {
-    type: Date,
-    default: null,
-  },
+      type: Date,
+      default: null,
+    },
   },
   {
     timestamps: true,
   }
-);
+)
 
-export default mongoose.model("Gig", GigSchema);
+export default mongoose.model('Gig', GigSchema)

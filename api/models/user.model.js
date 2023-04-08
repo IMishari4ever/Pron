@@ -42,6 +42,20 @@ const userSchema = new Schema(
       type: Number,
       default: 0,
     },
+    beingCleared: [
+      {
+        amount: { type: Number, required: true },
+        clearAt: {
+          type: Date,
+          default: () => Date.now() + 14 * 24 * 60 * 60 * 1000,
+        },
+      },
+    ],
+    level: {
+      type: String,
+      enum: ['New Seller', 'Level 1', 'Level 2', 'Top Rated'],
+      default: 'New Seller',
+    },
     followers: [
       {
         type: mongoose.Schema.Types.ObjectId,

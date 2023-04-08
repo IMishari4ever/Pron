@@ -136,10 +136,14 @@ export const allUser = async (req, res, next) => {
   const { userId, isSeller, role } = req
   console.log({ userId, isSeller, role })
 
-  const user = await User.find(
-    {},
-    'username role email img country phone desc isSeller'
-  )
+  // const user = await User.find(
+  //   {},
+  //   'username role email img country phone desc isSeller'
+  // )
+
+  //for testing allowing all data
+  const user = await User.find({})
+
   res.status(200).json(user)
 }
 

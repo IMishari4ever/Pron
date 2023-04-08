@@ -1,4 +1,3 @@
-import createError from '../utils/createError.js'
 import Order from '../models/order.model.js'
 import Gig from '../models/gig.model.js'
 import User from '../models/user.model.js'
@@ -15,9 +14,13 @@ export const purchaseGig = async (req, res, next) => {
   }
 
   buyer.balance -= gig.price
-  seller.balance += gig.price
   await buyer.save()
-  await seller.save()
+
+  // INSERRT NEW AMOUNT ON SELLER BEING CLEARED QUERY WHICH WILL BE CLEARED ON NEXT 14 DAYS
+
+  await User.findByIdAndUpdate(gig.userId, {
+    $push: { beingCleared: { amount: gig.price } },
+  })
 
   // Create new Order
   const newOrder = new Order({
@@ -29,9 +32,7 @@ export const purchaseGig = async (req, res, next) => {
     price: gig.price,
     isCompleted: true,
   })
-
   await newOrder.save()
-
   res.status(200).send({ message: 'Gig purchased successfully' })
 }
 
