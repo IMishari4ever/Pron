@@ -1,0 +1,11 @@
+1- To implement the followers system, we can enhance the user schema by adding two fields: followers and following, which would be an array of user IDs. In the endpoint, we can retrieve the user to follow by their ID and the current user by their ID using the findById method. After that, we can use the push method to add the user to the list of followers, with some checks to ensure they are not already following, or use the pull method to remove them if we want to unfollow.
+
+2- To create a dispute system, we can define a dispute schema that includes the IDs of the user, buyer, and seller, along with fields such as reason, details, status, createdAt, and updatedAt. Then, we can create a router for handling disputes and a controller to create a new dispute using the new keyword and passing in the required data.
+
+3- For the seller levels, we can create a model that includes the earnings and level fields. If the earnings exceed 500, we can modify the level to 2 and give the seller additional features.r
+
+4- To implement a favorite system, we can add a field called favorites in the user schema that is an array of gig IDs. We can use the push method to add as many favorites as we want, with some checks to ensure they do not already exist.
+
+5- To implement a holding balance system, we can add a paidAt field to indicate the date when the payment was made. We can use a global method to set the value of paidAt to 14 days from the current date using the Date object. Additionally, with a commission of 15%, we can calculate the earnings by subtracting the commission from the price.
+
+6- To implement a holding system for gigs, we can put the gig on hold when a seller submits it until an admin accepts the request. Once the gig is approved, the seller receives a notification indicating that it has been accepted. To implement this system, we can add a "hold" field to the gig schema, which can be set to true when a seller submits a gig. Then, an admin can change this field to false to indicate that the gig has been accepted. Additionally, we can store the date when the gig was submitted in a "submittedAt" field. To calculate the earnings for a gig, we can subtract a commission of 15% from the price of the gig.

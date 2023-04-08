@@ -28,5 +28,11 @@ routes.use('/api/conversations', conversationRoute)
 routes.use('/api/messages', messageRoute)
 routes.use('/api/reviews', reviewRoute)
 
+// New Features
+
+// routes.use('/api/disputes')
+// routes.use('/api/levels')
+// routes.use('/api/favourites')
+
 // Module Exports
 export default routes

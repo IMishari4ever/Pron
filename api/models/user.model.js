@@ -8,11 +8,6 @@ const userSchema = new Schema(
       required: true,
       unique: true,
     },
-    role: {
-      type: String,
-      enum: ['user', 'admin', 'moderator'],
-      default: 'user',
-    },
     email: {
       type: String,
       required: true,
@@ -22,12 +17,16 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    role: {
+      type: String,
+      enum: ['user', 'admin', 'moderator'],
+      default: 'user',
+    },
     img: {
       type: String,
     },
     country: {
       type: String,
-      required: true,
     },
     phone: {
       type: String,
@@ -40,9 +39,23 @@ const userSchema = new Schema(
       default: false,
     },
     balance: {
-    type: Number,
-    default: 0,
-  },
+      type: Number,
+      default: 0,
+    },
+    followers: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        unique: true,
+      },
+    ],
+    following: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        unique: true,
+      },
+    ],
   },
   {
     timestamps: true,
