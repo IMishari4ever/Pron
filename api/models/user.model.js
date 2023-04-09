@@ -70,6 +70,13 @@ const userSchema = new Schema(
         unique: true,
       },
     ],
+    wishlist: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Gig',
+        unique: true,
+      },
+    ],
   },
   {
     timestamps: true,

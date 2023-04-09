@@ -11,6 +11,7 @@ import messageRoute from './message.route.js'
 import reviewRoute from './review.route.js'
 import authRoute from './auth.route.js'
 import disputeRoute from './disputes.route.js'
+import favouriteRoute from './favourite.route.js'
 
 const routes = Router()
 
@@ -29,10 +30,10 @@ routes.use('/api/conversations', conversationRoute)
 routes.use('/api/messages', messageRoute)
 routes.use('/api/reviews', reviewRoute)
 
+routes.use('/api/favourites', favouriteRoute)
+
 // New Features
 routes.use('/api/disputes', disputeRoute)
-// routes.use('/api/levels')
-// routes.use('/api/favourites')
 
 // Module Exports
 export default routes

@@ -19,7 +19,11 @@ router.put('/:id/unfollow', verifyToken, unfollow)
 router.get('/:id/followers', verifyToken, followersList)
 router.get('/:id/followings', verifyToken, followingList)
 
-// User CRUD Functionalities
+// Wishlist functionalities:
+router.get('/:id/followers', verifyToken, followersList)
+router.get('/:id/followings', verifyToken, followingList)
+
+// User Functionalities
 router.delete('/:id', verifyToken, deleteUser)
 router.get('/', verifyToken, allUser)
 router.get('/:id', getUser)
