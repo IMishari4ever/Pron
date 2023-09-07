@@ -16,12 +16,6 @@ export const purchaseGig = async (req, res, next) => {
   buyer.balance -= gig.price
   await buyer.save()
 
-  // INSERRT NEW AMOUNT ON SELLER BEING CLEARED QUERY WHICH WILL BE CLEARED ON NEXT 14 DAYS
-
-  await User.findByIdAndUpdate(gig.userId, {
-    $push: { beingCleared: { amount: gig.price } },
-  })
-
   // Create new Order
   const newOrder = new Order({
     gigId: gig._id,
@@ -32,6 +26,12 @@ export const purchaseGig = async (req, res, next) => {
     price: gig.price,
     isCompleted: true,
   })
+
+  // INSERRT NEW AMOUNT ON SELLER BEING CLEARED QUERY WHICH WILL BE CLEARED ON NEXT 14 DAYS
+  await User.findByIdAndUpdate(gig.userId, {
+    $push: { beingCleared: { amount: gig.price }, order: newOrder._id },
+  })
+
   await newOrder.save()
   res.status(200).send({ message: 'Gig purchased successfully' })
 }

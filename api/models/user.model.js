@@ -44,6 +44,10 @@ const userSchema = new Schema(
     },
     beingCleared: [
       {
+        order: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Order',
+        },
         amount: { type: Number, required: true },
         clearAt: {
           type: Date,
@@ -67,13 +71,6 @@ const userSchema = new Schema(
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        unique: true,
-      },
-    ],
-    wishlist: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Gig',
         unique: true,
       },
     ],

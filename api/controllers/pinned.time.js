@@ -1,28 +1,35 @@
 import cron from 'node-cron'
 import Gig from '../models/gig.model.js'
-
 import UserModel from '../models/user.model.js'
+import DisputeModel from '../models/dispute.model.js'
 
 const job = cron.schedule('0 0 * * *', async () => {
   const pinnedGigs = await Gig.find({
     pinned: true,
     pinnedAt: { $lt: new Date(Date.now() - 24 * 60 * 60 * 1000) },
   })
+
   pinnedGigs.forEach(async (gig) => {
     gig.pinned = false
     await gig.save()
   })
 
+  let disputeOrders = (
+    await DisputeModel.find({ status: 'open' }, 'order')
+  ).map((i) => i.order)
+
   // FUNCTIONALITIES FOR GIG PAYMENT AND LEVEL UPGRADUTION:
   let lastDay = new Date(Date.now() - 24 * 60 * 60 * 1000)
   let query = {
     beingCleared: {
+      order: { $nin: disputeOrders },
       $elemMatch: {
         clearAt: { $lt: lastDay },
       },
     },
   }
   let users = await UserModel.find(query)
+
   //BULK WRITE CREATOR IDS IN USER PROFILE
   let updateSelerLevel = users.map((user) => {
     let clearedData = user.beingCleared.filter((u) => u.clearAt < lastDay)

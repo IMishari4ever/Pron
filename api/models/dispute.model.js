@@ -16,6 +16,10 @@ const disputeSchema = new mongoose.Schema({
     ref: 'User',
     required: true,
   },
+  order: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Order',
+  },
   title: { type: String, required: true },
   description: { type: String, required: true },
   status: {

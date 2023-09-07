@@ -86,7 +86,7 @@ export const unfollow = async (req, res, next) => {
 export const followingList = async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id).populate('following')
-    if (!user?.following?.length)
+    if (!user && user.following && user.following.length)
       return next(createError(404, 'No Followings Found!'))
     res.status(200).json(user.following)
   } catch (err) {
@@ -105,7 +105,7 @@ export const followersList = async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id).populate('followers')
 
-    if (!user?.followers?.length)
+    if (!user && user.followers && user.followers.length)
       return next(createError(404, 'No Followers Found!'))
 
     res.status(200).json(user.followers)
