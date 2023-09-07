@@ -1,22 +1,76 @@
 import Gig from '../models/gig.model.js'
+import notificationModel from '../models/notification.model.js'
+import userModel from '../models/user.model.js'
 import createError from '../utils/createError.js'
 
 export const createGig = async (req, res, next) => {
   if (!req.isSeller)
     return next(createError(403, 'Only sellers can create a gig!'))
 
-  const newGig = new Gig({
-    userId: req.userId,
-    ...req.body,
-  })
-
   try {
+    // Get Admin
+    const admin = await userModel.findOne({ role: 'admin' })
+    if (!admin._id) return next(createError(403, 'No Admin Found!'))
+
+    // Create New GIG Object
+    const newGig = new Gig({
+      userId: req.userId,
+      ...req.body,
+    })
+
+    // Insert notification for admin approval
+    await notificationModel.create({
+      creator: req.userId,
+      user: admin._id,
+      gig: newGig._id,
+      content: `${req.username} created a new gig, Pending for Approval.`,
+      type: 'gig-approval',
+    })
+
     const savedGig = await newGig.save()
     res.status(201).json(savedGig)
   } catch (err) {
     next(err)
   }
 }
+
+export const approveGig = async (req, res, next) => {
+  if (req.role !== 'admin')
+    return next(createError(403, 'User Role Should Be Admin!'))
+
+  try {
+    let { gigID, notificationID } = req.params
+
+    // Update Gig Status
+    const gig = await Gig.findByIdAndUpdate(
+      { _id: gigID },
+      { status: true },
+      { new: true }
+    )
+
+    // Read Notification Status As True
+    const notification = await notificationModel.findByIdAndUpdate(
+      {
+        _id: notificationID,
+      },
+      { readStatus: true }
+    )
+
+    // Dispatch Notifiation for Gig Seller
+    await notificationModel.create({
+      creator: req.userId,
+      user: notification.creator,
+      gig: gigID,
+      content: `Admin Approved Your Gig!`,
+      type: 'gig-approved',
+    })
+
+    res.status(201).json(gig)
+  } catch (err) {
+    next(err)
+  }
+}
+
 export const deleteGig = async (req, res, next) => {
   try {
     const gig = await Gig.findById(req.params.id)
@@ -50,6 +104,7 @@ export const getGigs = async (req, res, next) => {
       },
     }),
     ...(q.search && { title: { $regex: q.search, $options: 'i' } }),
+    status: true,
   }
   try {
     const gigs = await Gig.find(filters).sort({ [q.sort]: -1 })
@@ -58,7 +113,6 @@ export const getGigs = async (req, res, next) => {
     next(err)
   }
 }
-
 export const pinGig = async (req, res, next) => {
   try {
     const gig = await Gig.findById(id)
@@ -73,7 +127,6 @@ export const pinGig = async (req, res, next) => {
     res.status(500).send('Something went wrong')
   }
 }
-
 export const pinned = async (req, res, next) => {
   try {
     const pinned = await Gig.find({ pinned: true })

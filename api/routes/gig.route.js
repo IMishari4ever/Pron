@@ -1,5 +1,6 @@
 import express from 'express'
 import {
+  approveGig,
   createGig,
   deleteGig,
   getGig,
@@ -17,4 +18,5 @@ router.get('/single/:id', getGig)
 router.get('/', getGigs)
 router.put('/:id/pin', pinGig)
 router.get('/pinned', pinned)
+router.put('/:gigID/approve/:notificationID', verifyToken, approveGig)
 export default router

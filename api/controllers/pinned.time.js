@@ -23,6 +23,7 @@ const job = cron.schedule('0 0 * * *', async () => {
     },
   }
   let users = await UserModel.find(query)
+  
   //BULK WRITE CREATOR IDS IN USER PROFILE
   let updateSelerLevel = users.map((user) => {
     let clearedData = user.beingCleared.filter((u) => u.clearAt < lastDay)

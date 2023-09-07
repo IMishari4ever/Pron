@@ -75,6 +75,10 @@ const GigSchema = new Schema(
       type: Date,
       default: null,
     },
+    status: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

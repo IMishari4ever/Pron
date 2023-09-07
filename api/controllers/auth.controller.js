@@ -33,6 +33,7 @@ export const login = async (req, res, next) => {
       {
         id: user._id,
         isSeller: user.isSeller,
+        username: user.username,
         role: user.role,
       },
       process.env.JWT_KEY
