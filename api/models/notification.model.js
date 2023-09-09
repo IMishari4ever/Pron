@@ -15,6 +15,8 @@ const notificationSchema = new mongoose.Schema({
     type: mongoose.Types.ObjectId,
     ref: 'Gig',
   },
+  amount: Number,
+  paymentMethod: String,
   content: {
     type: String,
     required: true,
@@ -22,7 +24,13 @@ const notificationSchema = new mongoose.Schema({
   readStatus: { type: Boolean, default: false },
   type: {
     type: String,
-    enum: ['gig-approval', 'gig-approved', 'order'],
+    enum: [
+      'gig-approval',
+      'gig-approved',
+      'payment-approval',
+      'payment-approved',
+      'order',
+    ],
     required: true,
   },
 })

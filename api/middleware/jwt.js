@@ -9,7 +9,7 @@ export const verifyToken = (req, res, next) => {
     if (err) return next(createError(403, 'Token is not valid!'))
     console.log({ payload })
     req.userId = payload.id
-    req.uername = payload.username
+    req.username = payload.username
     req.isSeller = payload.isSeller
     req.role = payload.role
     next()

@@ -4,6 +4,7 @@ import userRoute from './user.route.js'
 import gigRoute from './gig.route.js'
 import orderRoute from './order.route.js'
 import ticketRouter from './ticket.route.js'
+import withdrawRouter from './withdraw.route.js'
 import community from './community.router.js'
 
 import conversationRoute from './conversation.route.js'
@@ -22,6 +23,8 @@ routes.use('/health', (_req, res) => res.status(200).json({ status: 'ok' }))
 routes.use('/api/v1/auth', authRoute)
 routes.use('/api/v1/users', userRoute)
 routes.use('/api/v1/tickets', ticketRouter)
+// **
+routes.use('/api/v1/withdraw', withdrawRouter)
 routes.use('/api/v1/community', community)
 routes.use('/api/v1/gigs', gigRoute)
 routes.use('/api/v1/orders', orderRoute)
